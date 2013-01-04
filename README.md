@@ -1,7 +1,7 @@
 Metronet Log - A WordPress Developers API for User Activity Logging
 ============
 
-Metronet Log rovides a WordPress API for date-based data storage based on a user ID.  It's up to the developer to implement the actual logging and data retrieval, but the plugin provides many helper methods (described below).
+Metronet Log provides a WordPress API for date-based data storage based on a user ID.  It's up to the developer to implement the actual logging and data retrieval, but the plugin provides many helper methods (described below).
 
 This plugin is strictly designed as an API for data storage and retrieval.  It's up to the developer to parse and present this data to the end user.
 
