@@ -367,4 +367,11 @@ class Metronet_Log	{
 }
 	
 register_activation_hook( __FILE__, 'Metronet_Log::create_table' );
+
+//I'd say, this is a uniquely clever way of making sure a plugin is loaded.  Hook into the action before running dependencies
+function metronet_log_loaded() {
+	do_action( 'metronet_log_loaded' );
+}
+add_action( 'plugins_loaded', 'metronet_log_loaded' );
+
 ?>
