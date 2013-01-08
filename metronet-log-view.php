@@ -80,7 +80,12 @@ class Metronet_Log_Views {
 		$metronet_logs_list_table = new Metronet_Logs_List_Table();
 		//todo - not quite ready
 		$metronet_logs_list_table->prepare_items();
+		echo '<form id="logs-filter" method="get">';
 		$metronet_logs_list_table->display();
+		
+		//todo - hidden inputs for all the fields
+		echo '<input type="hidden" name="page" value="metronet-log" />';
+		echo '</form>';
 		echo '</div><!-- .wrap -->';
 	} //end output_list_table
 	

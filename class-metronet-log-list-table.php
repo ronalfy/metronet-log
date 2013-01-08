@@ -35,7 +35,7 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 					switch ( $column_name ) {
 						case 'cb':
 							$attributes = "class='$column_name column-$column_name check-column'";
-							printf( '<th %1$s><input id="cb-select-%2$d" type="checkbox" name="post[]" value="%1$d"></th>', $attributes, $rec->log_id );
+							printf( '<th %1$s><input id="cb-select-%2$d" type="checkbox" name="post[]" value="%2$d"></th>', $attributes, $rec->log_id );
 							break;
 						case 'user':	
 								$user = get_user_by( 'id', $rec->user_id );
@@ -66,7 +66,7 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 						case 'date':
 								echo sprintf( '<td %s>', $attributes );
 								$date = sprintf( __( '%s ago', 'metronet_log' ), human_time_diff( strtotime( $rec->date ) ) );
-								echo esc_html( $date ); 
+								echo apply_filters( 'metronet_log_date', esc_html( $date ), $rec->date ); //Filter for devs 
 								echo '</td>';
 							break;
 							
@@ -96,6 +96,16 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 		return $columns;
 	} //end get_columns
 	
+	//Display Bulk Actions Dropdown
+	public function bulk_actions() {
+		echo "<select name='action'>\n";
+		echo "<option value='-1' selected='selected'>" . __( 'Bulk Actions', 'metronet_log' ) . "</option>\n";
+		echo "<option value='delete'>" . __( 'Delete', 'metronet_log' ) . "</option>\n";
+		echo "</select>\n";
+		submit_button( __( 'Apply', 'metronet_log' ), 'action', false, false, array( 'id' => "doaction" ) );
+		echo "\n";
+	} //end bulk_actions
+	
 	public function prepare_items() {
 		global $wpdb, $_wp_column_headers;
 		$screen = get_current_screen();
@@ -111,6 +121,9 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 		
 		/* -- Preparing your query -- */
 		$query = "SELECT * FROM {$tablename}"; //todo - This doesn't seem effecient
+		if ( !isset( $_GET[ 'orderby' ] ) ) {
+			$query .= ' ORDER BY date DESC';
+		}
 				
 	    //Number of elements in the table
 	    $totalitems = $wpdb->query( $query ); //return the total number of affected rows
