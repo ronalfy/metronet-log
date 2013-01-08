@@ -70,7 +70,12 @@ class Metronet_Log_Views {
 	*
 	**/
 	public function output_list_table() {
-		die( 'test' );
+		if( !class_exists( 'WP_List_Table' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+		}
+		include( 'class-metronet-log-list-table.php' );
+		$metronet_logs_list_table = new Metronet_Logs_List_Table();
+		$metronet_logs_list_table->display();
 	} //end output_list_table
 	
 
