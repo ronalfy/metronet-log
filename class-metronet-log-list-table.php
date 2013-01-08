@@ -34,7 +34,8 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 					//Display the cell
 					switch ( $column_name ) {
 						case 'cb':
-							printf( '<td><input id="cb-select-%1$d" type="checkbox" name="post[]" value="%1$d"></td>', $rec->log_id );
+							$attributes = "class='$column_name column-$column_name check-column'";
+							printf( '<th %1$s><input id="cb-select-%2$d" type="checkbox" name="post[]" value="%1$d"></th>', $attributes, $rec->log_id );
 							break;
 						case 'user':	
 								$user = get_user_by( 'id', $rec->user_id );
