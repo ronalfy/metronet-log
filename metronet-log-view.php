@@ -17,6 +17,7 @@ class Metronet_Log_Views {
 		//For the settings link
 		$plugin = plugin_basename(__FILE__); 
 		add_filter("plugin_action_links_$plugin", array( $this, 'settings_link' ) );
+		
 	} //end constructor
 	
 	/**
@@ -80,11 +81,11 @@ class Metronet_Log_Views {
 		$metronet_logs_list_table = new Metronet_Logs_List_Table();
 		//todo - not quite ready
 		$metronet_logs_list_table->prepare_items();
-		echo '<form id="logs-filter" method="get">';
+		echo '<form id="logs-filter" method="get" action="">';
 		$metronet_logs_list_table->display();
 		
 		//todo - hidden inputs for all the fields
-		echo '<input type="hidden" name="page" value="metronet-log" />';
+		echo '<input type="hidden" name="page" value="metronet-log" />'; //todo dynamic
 		echo '</form>';
 		echo '</div><!-- .wrap -->';
 	} //end output_list_table

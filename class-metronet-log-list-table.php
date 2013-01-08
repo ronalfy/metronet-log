@@ -3,8 +3,8 @@
 class Metronet_Logs_List_Table extends WP_List_Table {
 	public function __construct() {
 		parent::__construct( array(
-			'singular'=> 'singular', //Singular label
-			'plural' => 'plural', //plural label, also this well be one of the table css class
+			'singular'=> 'log',			
+			'plural' => 'logs',
 			'ajax'	=> false //We won't support Ajax for this table
 			) );
 	} //end constructor
@@ -35,7 +35,7 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 					switch ( $column_name ) {
 						case 'cb':
 							$attributes = "class='$column_name column-$column_name check-column'";
-							printf( '<th %1$s><input id="cb-select-%2$d" type="checkbox" name="post[]" value="%2$d"></th>', $attributes, $rec->log_id );
+							printf( '<th %1$s><input id="cb-select-%2$d" type="checkbox" name="log[]" value="%2$d"></th>', $attributes, $rec->log_id );
 							break;
 						case 'user':	
 								$user = get_user_by( 'id', $rec->user_id );
@@ -97,14 +97,20 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 	} //end get_columns
 	
 	//Display Bulk Actions Dropdown
-	public function bulk_actions() {
-		echo "<select name='action'>\n";
-		echo "<option value='-1' selected='selected'>" . __( 'Bulk Actions', 'metronet_log' ) . "</option>\n";
-		echo "<option value='delete'>" . __( 'Delete', 'metronet_log' ) . "</option>\n";
-		echo "</select>\n";
-		submit_button( __( 'Apply', 'metronet_log' ), 'action', false, false, array( 'id' => "doaction" ) );
-		echo "\n";
-	} //end bulk_actions
+	public function get_bulk_actions() {
+        $actions = array(
+            'delete'    => 'Delete'
+        );
+        return $actions;
+    }
+    public function process_bulk_action() {
+        //Detect when a bulk action is being triggered...
+        if( 'delete'===$this->current_action() ) {
+        	die( '<pre>' . print_r( $_GET, true ) );
+            wp_die('Items deleted (or they would be if we had items to delete)!');
+        }
+        
+    }
 	
 	public function prepare_items() {
 		global $wpdb, $_wp_column_headers;
@@ -118,6 +124,9 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 		
 		//Tablename
 		$tablename = Metronet_Log::get_table_name();
+		
+		//Handle bulk actions
+		$this->process_bulk_action();
 		
 		/* -- Preparing your query -- */
 		$query = "SELECT * FROM {$tablename}"; //todo - This doesn't seem effecient
