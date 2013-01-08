@@ -3,21 +3,77 @@
 class Metronet_Logs_List_Table extends WP_List_Table {
 	public function __construct() {
 		parent::__construct( array(
-			'singular'=> 'singular?', //Singular label
-			'plural' => 'plural?', //plural label, also this well be one of the table css class
+			'singular'=> 'singular', //Singular label
+			'plural' => 'plural', //plural label, also this well be one of the table css class
 			'ajax'	=> false //We won't support Ajax for this table
 			) );
 	} //end constructor
 	
+	public function display_rows() {
+		//Get the records registered in the prepare_items method
+		$records = $this->items;
+		
+		//Get the columns registered in the get_columns and get_sortable_columns methods
+		list( $columns, $hidden ) = $this->get_column_info();
+		
+		//Loop for each record
+		if( !empty( $records ) ){
+			foreach( $records as $rec ){
+				//Open the line
+			    echo '<tr id="record_'.$rec->log_id.'">';
+				foreach ( $columns as $column_name => $column_display_name ) {
+			
+					//Style attributes for each col
+					$class = "class='$column_name column-$column_name'";
+					$style = "";
+					$attributes = $class;
+						
+					//Display the cell
+					switch ( $column_name ) {
+						case 'cb':
+							echo sprintf( '<td %s>&nbsp;</td>', $attributes );
+							break;
+						case 'user':	
+								$user = get_user_by( 'id', $rec->user_id );
+								echo sprintf( '<td %s>', $attributes );
+								if ( !$user ) 
+									echo "User doesn't exist";
+								else
+									echo esc_html( $user->user_nicename );
+								echo '</td>';
+							break;
+						case 'type':
+								echo sprintf( '<td %s>', $attributes );
+								echo esc_html( $rec->type );
+								echo '</td>';
+							break;
+						case 'value':
+								echo sprintf( '<td %s>', $attributes );
+								echo esc_html( $rec->value ); //todo objects and arrays
+								echo '</td>';
+							break;
+						case 'date':
+								echo sprintf( '<td %s>', $attributes );
+								echo esc_html( $rec->date ); //todo formatting
+								echo '</td>';
+							break;
+							
+					}
+				}
+			
+				//Close the line
+				echo'</tr>';
+			}
+		}
+	}
+	
 	public function extra_tablenav( $which ) {
 		if ( $which == 'top' ) {
-			echo 'yo top';
 		} else {
-			echo 'yo below';
 		}
 	} //end extra_tablenav
 	
-	public function get_columns( $columns ) {
+	public function get_columns() {
 		$columns = array(
 			'cb' => '<input type="checkbox" />',
 			'user' => esc_html__( 'User', 'metronet_log' ),
@@ -25,11 +81,18 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 			'value' => esc_html__( 'Value', 'metronet_log' ),
 			'date' => esc_html__( 'Date', 'metronet_log' )
 		);
+		return $columns;
 	} //end get_columns
 	
 	public function prepare_items() {
 		global $wpdb, $_wp_column_headers;
 		$screen = get_current_screen();
+		
+		$this->_column_headers = array( 
+			$this->get_columns(),		// columns
+			array(),			// hidden
+			$this->get_sortable_columns(),	// sortable
+		);
 		
 		//Tablename
 		$tablename = Metronet_Log::get_table_name();
@@ -39,6 +102,7 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 				
 	    //Number of elements in the table
 	    $totalitems = $wpdb->query( $query ); //return the total number of affected rows
+	    	    
 	    //How many to display per page?
 	    $perpage = 50;
 	    //Which page is this?
@@ -68,8 +132,6 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 		
 		/* -- Fetch the items -- */
 		$this->items = $wpdb->get_results($query);
-		} //end prepare
-
-
+	} //end prepare
 } //end Metronet_Logs_List_Table
 ?>

@@ -75,7 +75,9 @@ class Metronet_Log_Views {
 		}
 		include( 'class-metronet-log-list-table.php' );
 		$metronet_logs_list_table = new Metronet_Logs_List_Table();
-		$metronet_logs_list_table->display();
+		//todo - not quite ready
+		//$metronet_logs_list_table->prepare_items();
+		//$metronet_logs_list_table->display();
 	} //end output_list_table
 	
 
