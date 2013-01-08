@@ -52,12 +52,20 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 							break;
 						case 'value':
 								echo sprintf( '<td %s>', $attributes );
-								echo esc_html( $rec->value ); //todo objects and arrays
+								$value = $rec->value;
+								//If objects or arrays, perform a filter so the author can determine how best to output
+								if ( is_object( $value ) || is_object( $value ) ) {
+									do_action( 'metronet_log_obj_arr', $rec->user_id, $rec->type, $value ); //For other plugin devs - output $value how you see fit
+								} else {
+									echo esc_html( $value ); //Assumes string or int
+								}
+								
 								echo '</td>';
 							break;
 						case 'date':
 								echo sprintf( '<td %s>', $attributes );
-								echo esc_html( $rec->date ); //todo formatting
+								$date = sprintf( __( '%s ago', 'metronet_log' ), human_time_diff( strtotime( $rec->date ) ) );
+								echo esc_html( $date ); 
 								echo '</td>';
 							break;
 							
