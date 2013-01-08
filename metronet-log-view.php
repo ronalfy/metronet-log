@@ -11,8 +11,12 @@ Contributors: ronalfy, metronet
 */ 
 class Metronet_Log_Views {
 	public function __construct() {
-	
+		add_action( 'init', array( $this, 'init' ) );
 	} //end constructor
+	
+	public function init() {
+		load_plugin_textdomain( 'metronet_log', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	} //end init
 	
 
 } //end class Metronet_Log_Views
