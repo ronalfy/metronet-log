@@ -34,13 +34,13 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 					//Display the cell
 					switch ( $column_name ) {
 						case 'cb':
-							echo sprintf( '<td %s>&nbsp;</td>', $attributes );
+							printf( '<td><input id="cb-select-%1$d" type="checkbox" name="post[]" value="%1$d"></td>', $rec->log_id );
 							break;
 						case 'user':	
 								$user = get_user_by( 'id', $rec->user_id );
 								echo sprintf( '<td %s>', $attributes );
 								if ( !$user ) 
-									echo "User doesn't exist";
+									echo __( "User doesn't exist", 'metronet_log' );
 								else
 									echo esc_html( $user->user_nicename );
 								echo '</td>';
