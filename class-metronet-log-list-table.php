@@ -10,6 +10,7 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 	} //end constructor
 	
 	public function display_rows() {
+		static $alternate;
 		//Get the records registered in the prepare_items method
 		$records = $this->items;
 		
@@ -19,8 +20,10 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 		//Loop for each record
 		if( !empty( $records ) ){
 			foreach( $records as $rec ){
+				$alternate = 'alternate' == $alternate ? '' : 'alternate';
+
 				//Open the line
-			    echo '<tr id="record_'.$rec->log_id.'">';
+			    echo sprintf( '<tr id="record_%d" class="%s">', $rec->log_id, $alternate );
 				foreach ( $columns as $column_name => $column_display_name ) {
 			
 					//Style attributes for each col

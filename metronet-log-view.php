@@ -73,11 +73,15 @@ class Metronet_Log_Views {
 		if( !class_exists( 'WP_List_Table' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 		}
+		$metronet_log_title = apply_filters( 'metronet_log_menu_title', __( 'Metronet Log', 'metronet_log' ) ); //Filterable for devs
+		echo '<div class="wrap">';
+		echo sprintf( '<h2>%s</h2>', $metronet_log_title );
 		include( 'class-metronet-log-list-table.php' );
 		$metronet_logs_list_table = new Metronet_Logs_List_Table();
 		//todo - not quite ready
-		//$metronet_logs_list_table->prepare_items();
-		//$metronet_logs_list_table->display();
+		$metronet_logs_list_table->prepare_items();
+		$metronet_logs_list_table->display();
+		echo '</div><!-- .wrap -->';
 	} //end output_list_table
 	
 
