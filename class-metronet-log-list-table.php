@@ -161,5 +161,7 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 		/* -- Fetch the items -- */
 		$this->items = $wpdb->get_results($query);
 	} //end prepare
+	
+	
 } //end Metronet_Logs_List_Table
 ?>

@@ -72,6 +72,11 @@ class Metronet_Log_Views {
         	$redirect_url = add_query_arg( array( 'page' => $_REQUEST[ 'page' ], 'log_ids' => implode( ',', $log_ids_to_delete ), 'paged' => $paged ), $redirect_url );
         	wp_redirect( $redirect_url );        	
 		}
+		if ( isset( $_GET[ 's' ] ) ) {
+			$redirect_url = remove_query_arg( array( '_wp_http_referer', '_wpnonce', 'log', 'action', 'action2', 'paged', 'log_ids' ), stripslashes( $_SERVER['REQUEST_URI'] ) );
+        	$redirect_url = add_query_arg( array( 'page' => $_REQUEST[ 'page' ], 'paged' => $paged ), $redirect_url );
+        	wp_redirect( $redirect_url );        	
+		}
 	} //end maybe_redirect
 	
 	/**
@@ -107,9 +112,9 @@ class Metronet_Log_Views {
 		echo sprintf( '<h2>%s</h2>', $metronet_log_title );
 		include( 'class-metronet-log-list-table.php' );
 		$metronet_logs_list_table = new Metronet_Logs_List_Table();
-		//todo - not quite ready
 		$metronet_logs_list_table->prepare_items();
 		echo '<form id="logs-filter" method="get" action="">';
+		$metronet_logs_list_table->search_box( __( 'Search Types', 'metronet_log' ), 'metronet_log' );
 		$metronet_logs_list_table->display();
 		
 		//todo - hidden inputs for all the fields
