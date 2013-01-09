@@ -5,6 +5,22 @@ Metronet Log provides a WordPress API for date-based data storage based on a use
 
 This plugin is strictly designed as an API for data storage and retrieval.  It's up to the developer to parse and present this data to the end user.
 
+FAQ
+----------------------
+###Does the plugin work with Multisite###
+
+Yes.  The plugin and its helper plugin can be network-activated.  
+
+For storing site-specific actions, we recommend doing what WordPress does, which is to append the site id to the data type.
+
+For example:
+
+```php
+$mt_log = new Metronet_Log();
+//134 is the site id
+$mt_log->add_log_value( 1, 'test_134_delete', 'site value' );
+```
+
 Example Usage
 ---------------------
 ###Adding a Log Item###
