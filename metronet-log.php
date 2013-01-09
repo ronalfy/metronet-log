@@ -372,7 +372,7 @@ register_activation_hook( __FILE__, 'Metronet_Log::create_table' );
 function metronet_log_loaded() {
 	do_action( 'metronet_log_loaded' );
 	$mt_log = new Metronet_Log();
-	//$mt_log->add_log_value( 1, 'test_delete', 'true', date( 'Y-m-d H:i:s' ) );
+	//$mt_log->add_log_value( 1, 'test_delete', array( 'blah' ), date( 'Y-m-d H:i:s' ) );
 }
 add_action( 'plugins_loaded', 'metronet_log_loaded' );
 

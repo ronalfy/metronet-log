@@ -56,10 +56,14 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 							break;
 						case 'value':
 								echo sprintf( '<td %s>', $attributes );
-								$value = $rec->value;
-								//If objects or arrays, perform a filter so the author can determine how best to output
-								if ( is_object( $value ) || is_object( $value ) ) {
+								$value = maybe_unserialize( $rec->value );
+								//If objects or arrays, perform a filter so the dev can determine how best to output
+								if ( is_object( $value ) || is_array( $value ) ) {
+									ob_start();
 									do_action( 'metronet_log_obj_arr', $rec->user_id, $rec->type, $value ); //For other plugin devs - output $value how you see fit
+									$output = ob_get_clean();
+									if ( empty( $output ) ) echo $value;
+									else echo $output;
 								} else {
 									echo esc_html( $value ); //Assumes string or int
 								}
