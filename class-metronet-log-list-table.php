@@ -1,5 +1,7 @@
 <?php
 //Code inspired by http://wp.smashingmagazine.com/2011/11/03/native-admin-tables-wordpress/
+//Technically shouldn't be using list table according to this comment: http://wpengineer.com/2426/wp_list_table-a-step-by-step-guide/#comment-9617
+
 class Metronet_Logs_List_Table extends WP_List_Table {
 	public function __construct() {
 		parent::__construct( array(
@@ -103,14 +105,6 @@ class Metronet_Logs_List_Table extends WP_List_Table {
         );
         return $actions;
     }
-    public function process_bulk_action() {
-        //Detect when a bulk action is being triggered...
-        if( 'delete'===$this->current_action() ) {
-        	die( '<pre>' . print_r( $_GET, true ) );
-            wp_die('Items deleted (or they would be if we had items to delete)!');
-        }
-        
-    }
 	
 	public function prepare_items() {
 		global $wpdb, $_wp_column_headers;
@@ -126,7 +120,7 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 		$tablename = Metronet_Log::get_table_name();
 		
 		//Handle bulk actions
-		$this->process_bulk_action();
+		//$this->process_bulk_action();
 		
 		/* -- Preparing your query -- */
 		$query = "SELECT * FROM {$tablename}"; //todo - This doesn't seem effecient

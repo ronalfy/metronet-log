@@ -18,6 +18,9 @@ class Metronet_Log_Views {
 		$plugin = plugin_basename(__FILE__); 
 		add_filter("plugin_action_links_$plugin", array( $this, 'settings_link' ) );
 		
+		//For redirecting
+		add_action( 'admin_init', array( $this, 'maybe_redirect' ) );
+		
 	} //end constructor
 	
 	/**
@@ -45,6 +48,26 @@ class Metronet_Log_Views {
 	public function init() {
 		load_plugin_textdomain( 'metronet_log', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	} //end init
+	
+	//Handles the redirect for searching and bulk actions in the list table
+	public function maybe_redirect() {
+		if ( !isset( $_GET[ 'page' ] ) ) return;
+		if ( $_GET[ 'page' ] != 'metronet-log' || !isset( $_GET[ 'action' ] ) ) return;
+		check_admin_referer( 'bulk-logs' );
+		$action = $_GET[ 'action' ];
+		
+		if ( isset( $_GET[ 'log' ] ) ) {
+			$log_ids_to_delete = (array)$_GET[ 'log' ];
+        	$paged = isset( $_GET[ 'paged' ] ) ? absint( $_GET[ 'paged' ] ) : 1;
+        	
+        	//Delete logs here
+        	
+        	//Redirect cleanly
+        	$redirect_url = remove_query_arg( array( '_wp_http_referer', '_wpnonce', 'log', 'action', 'action2' ), stripslashes( $_SERVER['REQUEST_URI'] ) );
+        	$redirect_url = add_query_arg( array( 'page' => $_REQUEST[ 'page' ], 'log_ids' => implode( ',', $log_ids_to_delete ), 'paged' => $paged ), $redirect_url );
+        	wp_redirect( $redirect_url );        	
+		}
+	} //end maybe_redirect
 	
 	/**
 	* settings_link()
