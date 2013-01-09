@@ -1,7 +1,8 @@
 <?php
-//Code inspired by http://wp.smashingmagazine.com/2011/11/03/native-admin-tables-wordpress/
-//Technically shouldn't be using list table according to this comment: http://wpengineer.com/2426/wp_list_table-a-step-by-step-guide/#comment-9617
-
+/*Code inspired by http://wp.smashingmagazine.com/2011/11/03/native-admin-tables-wordpress/
+Technically shouldn't be using list table according to this comment: http://wpengineer.com/2426/wp_list_table-a-step-by-step-guide/#comment-9617
+This class could use some work, notably searching by user ID and to/from dates - Feel free to contribute here: https://github.com/ronalfy/metronet-log
+*/
 class Metronet_Logs_List_Table extends WP_List_Table {
 	public function __construct() {
 		parent::__construct( array(
