@@ -56,11 +56,16 @@ class Metronet_Log_Views {
 		check_admin_referer( 'bulk-logs' );
 		$action = $_GET[ 'action' ];
 		
+		//Delete log files
 		if ( isset( $_GET[ 'log' ] ) ) {
 			$log_ids_to_delete = (array)$_GET[ 'log' ];
         	$paged = isset( $_GET[ 'paged' ] ) ? absint( $_GET[ 'paged' ] ) : 1;
         	
         	//Delete logs here
+        	$mt_log = new Metronet_Log();
+        	foreach( $log_ids_to_delete as $log_id ) {
+        		$mt_log->remove_log_value( $log_id );
+        	}
         	
         	//Redirect cleanly
         	$redirect_url = remove_query_arg( array( '_wp_http_referer', '_wpnonce', 'log', 'action', 'action2' ), stripslashes( $_SERVER['REQUEST_URI'] ) );
