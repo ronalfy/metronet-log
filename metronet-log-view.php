@@ -12,7 +12,16 @@ Contributors: ronalfy, metronet
 class Metronet_Log_Views {
 	public function __construct() {
 		add_action( 'init', array( $this, 'init' ) );
-		add_action( 'admin_menu', array( $this, 'add_menus' ) );
+		
+		if ( !function_exists( 'is_plugin_active_for_network' ) ) {
+			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+		}
+				
+		if ( is_multisite() && is_plugin_active_for_network( plugin_basename( __FILE__ ) ) ) {
+			add_action( 'network_admin_menu', array( $this, 'add_network_menus' ) );
+		} else {
+			add_action( 'admin_menu', array( $this, 'add_menus' ) );
+		}
 		
 		//For the settings link
 		$plugin = plugin_basename(__FILE__); 
@@ -35,6 +44,20 @@ class Metronet_Log_Views {
 		$metronet_log_title = apply_filters( 'metronet_log_menu_title', __( 'Metronet Log', 'metronet_log' ) ); //Filterable for devs
 		$metronet_log_slug = apply_filters( 'metronet_log_menu_slug', 'metronet-log' ); //Also filterable for devs
 		add_submenu_page( 'tools.php', $metronet_log_title, $metronet_log_title, 'manage_options', $metronet_log_slug, array( $this, 'output_list_table' ) );
+	} //end add_menus
+	
+	/**
+	* add_network_menus()
+	*
+	* Adds a network-wide menu
+	*
+	* @uses action network_admin_menu
+	*
+	**/
+	public function add_network_menus() {
+		$metronet_log_title = apply_filters( 'metronet_log_menu_title', __( 'Metronet Log', 'metronet_log' ) ); //Filterable for devs
+		$metronet_log_slug = apply_filters( 'metronet_log_menu_slug', 'metronet-log' ); //Also filterable for devs
+		add_submenu_page( 'settings.php', $metronet_log_title, $metronet_log_title, 'manage_network', $metronet_log_slug, array( $this, 'output_list_table' ) );
 	} //end add_menus
 	
 	/**
