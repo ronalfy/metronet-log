@@ -75,6 +75,9 @@ class Metronet_Log_Views {
 		if ( isset( $_GET[ 's' ] ) ) {
 			$redirect_url = remove_query_arg( array( '_wp_http_referer', '_wpnonce', 'log', 'action', 'action2', 'paged', 'log_ids' ), stripslashes( $_SERVER['REQUEST_URI'] ) );
         	$redirect_url = add_query_arg( array( 'page' => $_REQUEST[ 'page' ], 'paged' => $paged ), $redirect_url );
+        	if ( empty( $_GET[ 's' ] ) ) {
+        		$redirect_url = remove_query_arg( array( 's' ), $redirect_url );
+        	}
         	wp_redirect( $redirect_url );        	
 		}
 	} //end maybe_redirect

@@ -123,11 +123,15 @@ class Metronet_Logs_List_Table extends WP_List_Table {
 		//$this->process_bulk_action();
 		
 		/* -- Preparing your query -- */
-		$query = "SELECT * FROM {$tablename}"; //todo - This doesn't seem effecient
+		$query = "SELECT * FROM {$tablename} WHERE 1=1"; //todo - This doesn't seem effecient
+		if ( isset( $_GET[ 's' ] ) ) {
+			$search = esc_sql( $_GET[ 's' ] );
+			$query .= " AND type = '$search'";
+		}	
 		if ( !isset( $_GET[ 'orderby' ] ) ) {
 			$query .= ' ORDER BY date DESC';
 		}
-				
+						
 	    //Number of elements in the table
 	    $totalitems = $wpdb->query( $query ); //return the total number of affected rows
 	    	    
