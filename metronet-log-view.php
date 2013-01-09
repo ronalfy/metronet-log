@@ -143,8 +143,7 @@ class Metronet_Log_Views {
 		$metronet_logs_list_table->search_box( __( 'Search Types', 'metronet_log' ), 'metronet_log' );
 		$metronet_logs_list_table->display();
 		
-		//todo - hidden inputs for all the fields
-		echo '<input type="hidden" name="page" value="metronet-log" />'; //todo dynamic
+		echo '<input type="hidden" name="page" value="metronet-log" />'; 
 		echo '</form>';
 		echo '</div><!-- .wrap -->';
 	} //end output_list_table
