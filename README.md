@@ -18,7 +18,7 @@ For example:
 ```php
 $mt_log = new Metronet_Log();
 //134 is the site id
-$mt_log->add_log_value( 1, 'test_134_delete', 'site value' );
+$mt_log->add_log_value( $user_id, 'test_134_delete', 'site value' );
 ```
 
 Example Usage
