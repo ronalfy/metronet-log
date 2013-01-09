@@ -4,7 +4,7 @@ Plugin Name: Metronet Log
 Plugin URI: http://wordpress.org/extend/plugins/metronet-log/
 Description: Provides a WordPress API for date-based data storage based on a user ID.
 Author: Metronet
-Version: 1.0
+Version: 1.0.0
 Requires at least: 3.5
 Author URI: http://www.metronet.no
 Contributors: ronalfy, metronet
