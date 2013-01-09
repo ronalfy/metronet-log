@@ -1,4 +1,4 @@
-=== Metronet Profile Picture ===
+=== Metronet Log ===
 Contributors: metronet, ronalfy
 Tags: users, api, log, logging
 Requires at least: 3.5
